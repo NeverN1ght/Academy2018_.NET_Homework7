@@ -50,12 +50,16 @@ namespace Academy2018_.NET_Homework4.API.Controllers
             try
             {
                 var createdId = _airplanesService.Add(dto);
-                return CreatedAtAction("Get", 
+                return CreatedAtAction("Get",
                     _airplanesService.GetById(createdId));
             }
             catch (ValidationException ex)
             {
                 return BadRequest(ex.Errors);
+            }
+            catch (NullBodyException)
+            {
+                return BadRequest();
             }
         }
         
@@ -75,6 +79,10 @@ namespace Academy2018_.NET_Homework4.API.Controllers
             catch (ValidationException ex)
             {
                 return BadRequest(ex.Errors);
+            }
+            catch (NullBodyException)
+            {
+                return BadRequest();
             }
         }
         

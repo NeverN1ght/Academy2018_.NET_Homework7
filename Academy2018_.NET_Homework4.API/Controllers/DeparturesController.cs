@@ -57,6 +57,10 @@ namespace Academy2018_.NET_Homework4.API.Controllers
             {
                 return BadRequest(ex.Errors);
             }
+            catch (NullBodyException)
+            {
+                return BadRequest();
+            }
         }
         
         // PUT: api/Departures/5
@@ -75,6 +79,10 @@ namespace Academy2018_.NET_Homework4.API.Controllers
             catch (ValidationException ex)
             {
                 return BadRequest(ex.Errors);
+            }
+            catch (NullBodyException)
+            {
+                return BadRequest();
             }
         }
 

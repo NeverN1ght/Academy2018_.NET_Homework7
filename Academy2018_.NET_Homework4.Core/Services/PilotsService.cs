@@ -47,29 +47,39 @@ namespace Academy2018_.NET_Homework4.Core.Services
             return response;
         }
 
-        public object Add(PilotDto pilotDto)
+        public object Add(PilotDto dto)
         {
-            var validationResult = _validator.Validate(pilotDto);
+            if (dto == null)
+            {
+                throw new NullBodyException();
+            }
+
+            var validationResult = _validator.Validate(dto);
 
             if (validationResult.IsValid)
             {
                 return _repository.Create(
-                    _mapper.Map<PilotDto, Pilot>(pilotDto));
+                    _mapper.Map<PilotDto, Pilot>(dto));
             }
 
             throw new ValidationException(validationResult.Errors);
         }
 
-        public void Update(object id, PilotDto pilotDto)
+        public void Update(object id, PilotDto dto)
         {
+            if (dto == null)
+            {
+                throw new NullBodyException();
+            }
+
             if (_repository.IsExist(id))
             {
-                var validationResult = _validator.Validate(pilotDto);
+                var validationResult = _validator.Validate(dto);
 
                 if (validationResult.IsValid)
                 {
                     _repository.Update((int)id,
-                        _mapper.Map<PilotDto, Pilot>(pilotDto));
+                        _mapper.Map<PilotDto, Pilot>(dto));
                 }
                 else
                 {

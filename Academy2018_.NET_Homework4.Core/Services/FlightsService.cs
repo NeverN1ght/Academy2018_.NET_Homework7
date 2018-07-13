@@ -48,6 +48,11 @@ namespace Academy2018_.NET_Homework4.Core.Services
 
         public object Add(FlightDto dto)
         {
+            if (dto == null)
+            {
+                throw new NullBodyException();
+            }
+
             var validationResult = _validator.Validate(dto);
 
             if (validationResult.IsValid)
@@ -61,6 +66,11 @@ namespace Academy2018_.NET_Homework4.Core.Services
 
         public void Update(object id, FlightDto dto)
         {
+            if (dto == null)
+            {
+                throw new NullBodyException();
+            }
+
             if (_repository.IsExist(id))
             {
                 var validationResult = _validator.Validate(dto);
