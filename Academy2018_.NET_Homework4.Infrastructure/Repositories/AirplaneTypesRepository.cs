@@ -20,10 +20,12 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
             return _dataSource.AirplaneTypes;
         }
 
-        public void Create(AirplaneType entity)
+        public object Create(AirplaneType entity)
         {
             entity.Id = _dataSource.AirplaneTypes.Max(a => a.Id) + 1;
             _dataSource.AirplaneTypes.Add(entity);
+
+            return entity.Id;
         }
 
         public void Update(object id, AirplaneType entity)
@@ -42,6 +44,11 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
         public void Delete(AirplaneType entity)
         {
             _dataSource.AirplaneTypes.Remove(entity);
+        }
+
+        public bool IsExist(object id)
+        {
+            return _dataSource.AirplaneTypes.FirstOrDefault(a => a.Id == (int) id) != null;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Academy2018_.NET_Homework4.Shared.DTOs
 {
     public class FlightDto
     {
-        public Guid Number { get; set; }
+        public string Number { get; set; }
 
         public string DeparturePoint { get; set; }
 

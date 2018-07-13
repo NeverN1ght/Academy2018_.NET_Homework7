@@ -4,7 +4,9 @@ using Academy2018_.NET_Homework4.Core.Abstractions;
 using Academy2018_.NET_Homework4.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework4.Infrastructure.Models;
 using Academy2018_.NET_Homework4.Shared.DTOs;
+using Academy2018_.NET_Homework4.Shared.Exceptions;
 using AutoMapper;
+using FluentValidation;
 
 namespace Academy2018_.NET_Homework4.Core.Services
 {
@@ -12,11 +14,16 @@ namespace Academy2018_.NET_Homework4.Core.Services
     {
         private readonly IRepository<Ticket> _repository;
         private readonly IMapper _mapper;
+        private readonly AbstractValidator<TicketDto> _validator;
 
-        public TicketsService(IRepository<Ticket> repository, IMapper mapper)
+        public TicketsService(
+            IRepository<Ticket> repository, 
+            IMapper mapper,
+            AbstractValidator<TicketDto> validator)
         {
             _repository = repository;
             _mapper = mapper;
+            _validator = validator;
         }
 
         public IEnumerable<TicketDto> GetAll()
@@ -27,25 +34,62 @@ namespace Academy2018_.NET_Homework4.Core.Services
 
         public TicketDto GetById(object id)
         {
-            return _mapper.Map<Ticket, TicketDto>(
+            var response = _mapper.Map<Ticket, TicketDto>(
                 _repository.Get().FirstOrDefault(t => t.Id == (int)id));
+
+            if (response == null)
+            {
+                throw new NotExistException();
+            }
+
+            return response;
         }
 
-        public void Add(TicketDto dto)
+        public object Add(TicketDto dto)
         {
-            _repository.Create(
-                _mapper.Map<TicketDto, Ticket>(dto));
+            var validationResult = _validator.Validate(dto);
+
+            if (validationResult.IsValid)
+            {
+                return _repository.Create(
+                    _mapper.Map<TicketDto, Ticket>(dto));
+            }
+
+            throw new ValidationException(validationResult.Errors);
         }
 
         public void Update(object id, TicketDto dto)
         {
-            _repository.Update((int)id,
-                _mapper.Map<TicketDto, Ticket>(dto));
+            if (_repository.IsExist(id))
+            {
+                var validationResult = _validator.Validate(dto);
+
+                if (validationResult.IsValid)
+                {
+                    _repository.Update((int)id,
+                        _mapper.Map<TicketDto, Ticket>(dto));
+                }
+                else
+                {
+                    throw new ValidationException(validationResult.Errors);
+                }
+            }
+            else
+            {
+                throw new NotExistException();
+            }
         }
 
         public void Delete(object id)
         {
-            _repository.Delete((int)id);
+            if (_repository.IsExist(id))
+            {
+                _repository.Delete((int)id);
+            }
+            else
+            {
+                throw new NotExistException();
+            }
         }
     }
 }

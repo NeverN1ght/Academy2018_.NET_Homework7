@@ -9,12 +9,14 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Abstractions
     {
         IEnumerable<TEntity> Get();
 
-        void Create(TEntity entity);
+        object Create(TEntity entity);
 
         void Update(object id, TEntity entity);
 
         void Delete(object id);
 
         void Delete(TEntity entity);
+
+        bool IsExist(object id);
     }
 }

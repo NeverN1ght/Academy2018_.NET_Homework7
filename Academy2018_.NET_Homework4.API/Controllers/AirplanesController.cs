@@ -12,30 +12,30 @@ using Microsoft.AspNetCore.Mvc;
 namespace Academy2018_.NET_Homework4.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Flights")]
-    public class FlightsController : Controller
+    [Route("api/Airplanes")]
+    public class AirplanesController : Controller
     {
-        private readonly IService<FlightDto> _flightsService;
+        private readonly IService<AirplaneDto> _airplanesService;
 
-        public FlightsController(IService<FlightDto> flightsService)
+        public AirplanesController(IService<AirplaneDto> airplanesService)
         {
-            _flightsService = flightsService;
+            _airplanesService = airplanesService;
         }
 
-        // GET: api/Flights
+        // GET: api/Airplanes
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_flightsService.GetAll());
+            return Ok(_airplanesService.GetAll());
         }
 
-        // GET: api/Flights/5
-        [HttpGet("{number}")]
-        public IActionResult Get(Guid number)
+        // GET: api/Airplanes/5
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
         {
             try
             {
-                return Ok(_flightsService.GetById(number));
+                return Ok(_airplanesService.GetById(id));
             }
             catch (NotExistException)
             {
@@ -43,15 +43,15 @@ namespace Academy2018_.NET_Homework4.API.Controllers
             }
         }
         
-        // POST: api/Flights
+        // POST: api/Airplanes
         [HttpPost]
-        public IActionResult Post([FromBody]FlightDto dto)
+        public IActionResult Post([FromBody]AirplaneDto dto)
         {
             try
             {
-                var createdNumber = _flightsService.Add(dto);
-                return CreatedAtAction("Get",
-                    _flightsService.GetById(createdNumber));
+                var createdId = _airplanesService.Add(dto);
+                return CreatedAtAction("Get", 
+                    _airplanesService.GetById(createdId));
             }
             catch (ValidationException ex)
             {
@@ -59,13 +59,13 @@ namespace Academy2018_.NET_Homework4.API.Controllers
             }
         }
         
-        // PUT: api/Flights/5
-        [HttpPut("{number}")]
-        public IActionResult Put(Guid number, [FromBody] FlightDto dto)
+        // PUT: api/Airplanes/5
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody]AirplaneDto dto)
         {
             try
             {
-                _flightsService.Update(number, dto);
+                _airplanesService.Update(id, dto);
                 return Ok();
             }
             catch (NotExistException)
@@ -79,13 +79,13 @@ namespace Academy2018_.NET_Homework4.API.Controllers
         }
         
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{number}")]
-        public IActionResult Delete(Guid number)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
             try
             {
-                _flightsService.Delete(number);
-                return Ok();
+                _airplanesService.Delete(id);
+                return NoContent();
             }
             catch (NotExistException)
             {

@@ -20,10 +20,12 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
             return _dataSource.Departures;
         }
 
-        public void Create(Departure entity)
+        public object Create(Departure entity)
         {
             entity.Id = _dataSource.Departures.Max(d => d.Id) + 1;
             _dataSource.Departures.Add(entity);
+
+            return entity.Id;
         }
 
         public void Update(object id, Departure entity)
@@ -42,6 +44,11 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
         public void Delete(Departure entity)
         {
             _dataSource.Departures.Remove(entity);
+        }
+
+        public bool IsExist(object id)
+        {
+            return _dataSource.Departures.FirstOrDefault(d => d.Id == (int) id) != null;
         }
     }
 }

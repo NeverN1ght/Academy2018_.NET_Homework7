@@ -4,7 +4,9 @@ using Academy2018_.NET_Homework4.Core.Abstractions;
 using Academy2018_.NET_Homework4.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework4.Infrastructure.Models;
 using Academy2018_.NET_Homework4.Shared.DTOs;
+using Academy2018_.NET_Homework4.Shared.Exceptions;
 using AutoMapper;
+using FluentValidation;
 
 namespace Academy2018_.NET_Homework4.Core.Services
 {
@@ -12,11 +14,16 @@ namespace Academy2018_.NET_Homework4.Core.Services
     {
         private readonly IRepository<Stewardesse> _repository;
         private readonly IMapper _mapper;
+        private readonly AbstractValidator<StewardesseDto> _validator;
 
-        public StewardessesService(IRepository<Stewardesse> repository, IMapper mapper)
+        public StewardessesService(
+            IRepository<Stewardesse> repository, 
+            IMapper mapper,
+            AbstractValidator<StewardesseDto> validator)
         {
             _repository = repository;
             _mapper = mapper;
+            _validator = validator;
         }
 
         public IEnumerable<StewardesseDto> GetAll()
@@ -27,25 +34,62 @@ namespace Academy2018_.NET_Homework4.Core.Services
 
         public StewardesseDto GetById(object id)
         {
-            return _mapper.Map<Stewardesse, StewardesseDto>(
+            var response = _mapper.Map<Stewardesse, StewardesseDto>(
                 _repository.Get().FirstOrDefault(s => s.Id == (int)id));
+
+            if (response == null)
+            {
+                throw new NotExistException();
+            }
+
+            return response;
         }
 
-        public void Add(StewardesseDto dto)
+        public object Add(StewardesseDto dto)
         {
-            _repository.Create(
-                _mapper.Map<StewardesseDto, Stewardesse>(dto));
+            var validationResult = _validator.Validate(dto);
+
+            if (validationResult.IsValid)
+            {
+                return _repository.Create(
+                    _mapper.Map<StewardesseDto, Stewardesse>(dto));
+            }
+
+            throw new ValidationException(validationResult.Errors);
         }
 
         public void Update(object id, StewardesseDto dto)
         {
-            _repository.Update((int)id,
-                _mapper.Map<StewardesseDto, Stewardesse>(dto));
+            if (_repository.IsExist(id))
+            {
+                var validationResult = _validator.Validate(dto);
+
+                if (validationResult.IsValid)
+                {
+                    _repository.Update((int)id,
+                        _mapper.Map<StewardesseDto, Stewardesse>(dto));
+                }
+                else
+                {
+                    throw new ValidationException(validationResult.Errors);
+                }
+            }
+            else
+            {
+                throw new NotExistException();
+            }
         }
 
         public void Delete(object id)
         {
-            _repository.Delete((int)id);
+            if (_repository.IsExist(id))
+            {
+                _repository.Delete((int)id);
+            }
+            else
+            {
+                throw new NotExistException();
+            }
         }
     }
 }

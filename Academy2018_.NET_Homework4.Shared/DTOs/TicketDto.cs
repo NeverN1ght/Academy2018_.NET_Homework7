@@ -8,6 +8,6 @@ namespace Academy2018_.NET_Homework4.Shared.DTOs
 
         public decimal Price { get; set; }
 
-        public Guid FlightNumber { get; set; }
+        public string FlightNumber { get; set; }
     }
 }

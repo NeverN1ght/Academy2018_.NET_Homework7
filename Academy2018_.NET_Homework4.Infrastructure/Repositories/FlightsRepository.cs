@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Academy2018_.NET_Homework4.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework4.Infrastructure.Data;
 using Academy2018_.NET_Homework4.Infrastructure.Models;
@@ -20,28 +21,34 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
             return _dataSource.Flights;
         }
 
-        public void Create(Flight entity)
+        public object Create(Flight entity)
         {
-            entity.Number = Guid.NewGuid();
             _dataSource.Flights.Add(entity);
+
+            return entity.Number;
         }
 
         public void Update(object id, Flight entity)
         {
             Delete(id);
-            entity.Number = (Guid)id;
+            entity.Number = (string)id;
             _dataSource.Flights.Add(entity);
         }
 
         public void Delete(object id)
         {
-            var entity = _dataSource.Flights.Find(f => f.Number == (Guid)id);
+            var entity = _dataSource.Flights.Find(f => f.Number == (string)id);
             Delete(entity);
         }
 
         public void Delete(Flight entity)
         {
             _dataSource.Flights.Remove(entity);
+        }
+
+        public bool IsExist(object id)
+        {
+            return _dataSource.Flights.FirstOrDefault(f => f.Number == (string) id) != null;
         }
     }
 }

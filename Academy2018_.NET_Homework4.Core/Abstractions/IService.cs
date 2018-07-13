@@ -9,7 +9,7 @@ namespace Academy2018_.NET_Homework4.Core.Abstractions
 
         TDto GetById(object id);
 
-        void Add(TDto dto);
+        object Add(TDto dto);
 
         void Update(object id, TDto dto);
 

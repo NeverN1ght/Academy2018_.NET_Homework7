@@ -5,7 +5,9 @@ using Academy2018_.NET_Homework4.Core.Abstractions;
 using Academy2018_.NET_Homework4.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework4.Infrastructure.Models;
 using Academy2018_.NET_Homework4.Shared.DTOs;
+using Academy2018_.NET_Homework4.Shared.Exceptions;
 using AutoMapper;
+using FluentValidation;
 
 namespace Academy2018_.NET_Homework4.Core.Services
 {
@@ -13,11 +15,16 @@ namespace Academy2018_.NET_Homework4.Core.Services
     {
         private readonly IRepository<Flight> _repository;
         private readonly IMapper _mapper;
+        private readonly AbstractValidator<FlightDto> _validator;
 
-        public FlightsService(IRepository<Flight> repository, IMapper mapper)
+        public FlightsService(
+            IRepository<Flight> repository, 
+            IMapper mapper,
+            AbstractValidator<FlightDto> validator)
         {
             _repository = repository;
             _mapper = mapper;
+            _validator = validator;
         }
 
         public IEnumerable<FlightDto> GetAll()
@@ -28,25 +35,62 @@ namespace Academy2018_.NET_Homework4.Core.Services
 
         public FlightDto GetById(object id)
         {
-            return _mapper.Map<Flight, FlightDto>(
-                _repository.Get().FirstOrDefault(f => f.Number == (Guid)id));
+            var response = _mapper.Map<Flight, FlightDto>(
+                _repository.Get().FirstOrDefault(f => f.Number == (string)id));
+
+            if (response == null)
+            {
+                throw new NotExistException();
+            }
+
+            return response;
         }
 
-        public void Add(FlightDto dto)
+        public object Add(FlightDto dto)
         {
-            _repository.Create(
-                _mapper.Map<FlightDto, Flight>(dto));
+            var validationResult = _validator.Validate(dto);
+
+            if (validationResult.IsValid)
+            {
+                return _repository.Create(
+                    _mapper.Map<FlightDto, Flight>(dto));
+            }
+
+            throw new ValidationException(validationResult.Errors);
         }
 
         public void Update(object id, FlightDto dto)
         {
-            _repository.Update((Guid)id,
-                _mapper.Map<FlightDto, Flight>(dto));
+            if (_repository.IsExist(id))
+            {
+                var validationResult = _validator.Validate(dto);
+
+                if (validationResult.IsValid)
+                {
+                    _repository.Update((Guid)id,
+                        _mapper.Map<FlightDto, Flight>(dto));
+                }
+                else
+                {
+                    throw new ValidationException(validationResult.Errors);
+                }
+            }
+            else
+            {
+                throw new NotExistException();
+            }
         }
 
         public void Delete(object id)
         {
-            _repository.Delete((Guid)id);
+            if (_repository.IsExist(id))
+            {
+                _repository.Delete((Guid)id);
+            }
+            else
+            {
+                throw new NotExistException();
+            }
         }
     }
 }

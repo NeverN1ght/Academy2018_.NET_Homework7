@@ -20,10 +20,12 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
             return _dataSource.Pilots;
         }
 
-        public void Create(Pilot entity)
+        public object Create(Pilot entity)
         {
             entity.Id = _dataSource.Pilots.Max(p => p.Id) + 1;
             _dataSource.Pilots.Add(entity);
+
+            return entity.Id;
         }
 
         public void Update(object id, Pilot entity)
@@ -42,6 +44,11 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
         public void Delete(Pilot entity)
         {
             _dataSource.Pilots.Remove(entity);
+        }
+
+        public bool IsExist(object id)
+        {
+            return _dataSource.Pilots.FirstOrDefault(p => p.Id == (int) id) != null;
         }
     }
 }

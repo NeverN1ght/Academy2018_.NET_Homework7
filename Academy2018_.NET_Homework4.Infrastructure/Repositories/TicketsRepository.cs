@@ -20,10 +20,12 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
             return _dataSource.Tickets;
         }
 
-        public void Create(Ticket entity)
+        public object Create(Ticket entity)
         {
             entity.Id = _dataSource.Tickets.Max(t => t.Id) + 1;
             _dataSource.Tickets.Add(entity);
+
+            return entity.Id;
         }
 
         public void Update(object id, Ticket entity)
@@ -42,6 +44,11 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
         public void Delete(Ticket entity)
         {
             _dataSource.Tickets.Remove(entity);
+        }
+
+        public bool IsExist(object id)
+        {
+            return _dataSource.Tickets.FirstOrDefault(t => t.Id == (int) id) != null;         
         }
     }
 }

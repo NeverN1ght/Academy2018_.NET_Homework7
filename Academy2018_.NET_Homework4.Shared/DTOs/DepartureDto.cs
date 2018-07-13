@@ -7,7 +7,7 @@ namespace Academy2018_.NET_Homework4.Shared.DTOs
     {
         public int Id { get; set; }
 
-        public Flight Flight { get; set; }
+        public string FlightNumber { get; set; }
 
         public DateTime DepartureTime { get; set; }
 

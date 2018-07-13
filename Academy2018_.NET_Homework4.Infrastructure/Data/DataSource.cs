@@ -215,11 +215,12 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
 
             Tickets = new List<Ticket>();
 
-            var flightNumbers = new List<Guid>();
-            for (int i = 0; i < 3; i++)
+            var flightNumbers = new List<string>
             {
-                flightNumbers.Add(Guid.NewGuid());
-            }
+                "DY-2891",
+                "AC-3948",
+                "KO-8712"
+            };
 
             Tickets = new List<Ticket>();
             for (int i = 0; i < 35; i++)
@@ -316,35 +317,35 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
 
             Departures.Add(new Departure {
                 Id = 1,
-                Flight = Flights.Find(f => f.Number == flightNumbers[0]),
+                FlightNumber = flightNumbers[0],
                 Airplane = Airplanes.Find(p => p.Id == 1),
                 Crew = Crews.Find(c => c.Id == 1),
                 DepartureTime = new DateTime(2018, 10, 21, 20, 22, 0)
             });
             Departures.Add(new Departure {
                 Id = 2,
-                Flight = Flights.Find(f => f.Number == flightNumbers[1]),
+                FlightNumber = flightNumbers[1],
                 Airplane = Airplanes.Find(p => p.Id == 2),
                 Crew = Crews.Find(c => c.Id == 2),
                 DepartureTime = new DateTime(2018, 9, 22, 20, 22, 0)
             });
             Departures.Add(new Departure {
                 Id = 3,
-                Flight = Flights.Find(f => f.Number == flightNumbers[1]),
+                FlightNumber = flightNumbers[1],
                 Airplane = Airplanes.Find(p => p.Id == 2),
                 Crew = Crews.Find(c => c.Id == 2),
                 DepartureTime = new DateTime(2018, 9, 23, 20, 22, 0)
             });
             Departures.Add(new Departure {
                 Id = 4,
-                Flight = Flights.Find(f => f.Number == flightNumbers[2]),
+                FlightNumber = flightNumbers[2],
                 Airplane = Airplanes.Find(p => p.Id == 3),
                 Crew = Crews.Find(c => c.Id == 3),
                 DepartureTime = new DateTime(2018, 8, 15, 20, 22, 0)
             });
             Departures.Add(new Departure {
                 Id = 5,
-                Flight = Flights.Find(f => f.Number == flightNumbers[2]),
+                FlightNumber = flightNumbers[2],
                 Airplane = Airplanes.Find(p => p.Id == 4),
                 Crew = Crews.Find(c => c.Id == 3),
                 DepartureTime = new DateTime(2018, 8, 17, 20, 22, 0)

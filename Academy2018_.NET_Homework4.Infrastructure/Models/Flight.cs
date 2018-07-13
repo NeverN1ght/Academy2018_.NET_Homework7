@@ -6,7 +6,7 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Models
 {
     public class Flight
     {
-        public Guid Number { get; set; }
+        public string Number { get; set; }
 
         public string DeparturePoint { get; set; }
 

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Academy2018_.NET_Homework4.Core.Abstractions;
 using Academy2018_.NET_Homework4.Core.Services;
 using Academy2018_.NET_Homework4.Shared.DTOs;
+using Academy2018_.NET_Homework4.Shared.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,37 +25,73 @@ namespace Academy2018_.NET_Homework4.API.Controllers
 
         // GET: api/Pilots
         [HttpGet]
-        public IEnumerable<PilotDto> Get()
+        public IActionResult Get()
         {
-            return _pilotsService.GetAll();
+            return Ok(_pilotsService.GetAll());
         }
 
         // GET: api/Pilots/5
-        [HttpGet("{id}"/*, Name = "Get"*/)]
-        public PilotDto Get(int id)
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
         {
-            return _pilotsService.GetById(id);
+            try
+            {
+                return Ok(_pilotsService.GetById(id));
+            }
+            catch (NotExistException)
+            {
+                return NotFound();
+            }
         }
         
         // POST: api/Pilots
         [HttpPost]
-        public void Post([FromBody]PilotDto pilotDto)
+        public IActionResult Post([FromBody]PilotDto pilotDto)
         {
-            _pilotsService.Add(pilotDto);
+            try
+            {
+                var createdId = _pilotsService.Add(pilotDto);
+                return CreatedAtAction("Get",
+                    _pilotsService.GetById(createdId));
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+            }
         }
         
         // PUT: api/Pilots/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]PilotDto pilotDto)
+        public IActionResult Put(int id, [FromBody]PilotDto pilotDto)
         {
-            _pilotsService.Update(id, pilotDto);
+            try
+            {
+                _pilotsService.Update(id, pilotDto);
+                return Ok();
+            }
+            catch (NotExistException)
+            {
+                return NotFound();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+            }
         }
         
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-            _pilotsService.Delete(id);
+            try
+            {
+                _pilotsService.Delete(id);
+                return Ok();
+            }
+            catch (NotExistException)
+            {
+                return NotFound();
+            }
         }
     }
 }

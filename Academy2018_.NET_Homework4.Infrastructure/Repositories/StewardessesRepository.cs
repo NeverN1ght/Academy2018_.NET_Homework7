@@ -20,10 +20,12 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
             return _dataSource.Stewardesses;
         }
 
-        public void Create(Stewardesse entity)
+        public object Create(Stewardesse entity)
         {
             entity.Id = _dataSource.Stewardesses.Max(s => s.Id) + 1;
             _dataSource.Stewardesses.Add(entity);
+
+            return entity.Id;
         }
 
         public void Update(object id, Stewardesse entity)
@@ -42,6 +44,11 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
         public void Delete(Stewardesse entity)
         {
             _dataSource.Stewardesses.Remove(entity);
+        }
+
+        public bool IsExist(object id)
+        {
+            return _dataSource.Stewardesses.FirstOrDefault(s => s.Id == (int) id) != null;
         }
     }
 }

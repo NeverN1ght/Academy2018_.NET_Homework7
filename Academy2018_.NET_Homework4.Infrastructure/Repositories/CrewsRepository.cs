@@ -20,10 +20,12 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
             return _dataSource.Crews;
         }
 
-        public void Create(Crew entity)
+        public object Create(Crew entity)
         {
             entity.Id = _dataSource.Crews.Max(c => c.Id) + 1;
             _dataSource.Crews.Add(entity);
+
+            return entity.Id;
         }
 
         public void Update(object id, Crew entity)
@@ -42,6 +44,11 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
         public void Delete(Crew entity)
         {
             _dataSource.Crews.Remove(entity);
+        }
+
+        public bool IsExist(object id)
+        {
+            return _dataSource.Crews.FirstOrDefault(c => c.Id == (int) id) != null;
         }
     }
 }
