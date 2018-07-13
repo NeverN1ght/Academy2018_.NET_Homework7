@@ -5,13 +5,13 @@ using System.Linq.Expressions;
 namespace Academy2018_.NET_Homework4.Infrastructure.Abstractions
 {
     public interface IRepository<TEntity> 
-        where TEntity: class, IEntity
+        where TEntity: class
     {
-        IEnumerable<TEntity> Get(Func<TEntity, bool> filter = null);
+        IEnumerable<TEntity> Get();
 
-        void Create(TEntity entity, string createdBy = null);
+        void Create(TEntity entity);
 
-        void Update(TEntity entity, string updatedBy = null);
+        void Update(object id, TEntity entity);
 
         void Delete(object id);
 

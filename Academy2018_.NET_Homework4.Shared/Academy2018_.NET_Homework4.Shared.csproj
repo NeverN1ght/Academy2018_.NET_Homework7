@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
+    <ProjectReference Include="..\Academy2018_.NET_Homework4.Infrastructure\Academy2018_.NET_Homework4.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

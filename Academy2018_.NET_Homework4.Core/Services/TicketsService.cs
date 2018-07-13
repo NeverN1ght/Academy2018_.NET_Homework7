@@ -8,38 +8,39 @@ using AutoMapper;
 
 namespace Academy2018_.NET_Homework4.Core.Services
 {
-    public class PilotsService: IService<PilotDto>
+    public class TicketsService: IService<TicketDto>
     {
-        private readonly IRepository<Pilot> _repository;
+        private readonly IRepository<Ticket> _repository;
         private readonly IMapper _mapper;
 
-        public PilotsService(IRepository<Pilot> repository, IMapper mapper)
+        public TicketsService(IRepository<Ticket> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public IEnumerable<PilotDto> GetAll()
+        public IEnumerable<TicketDto> GetAll()
         {
-            return _mapper.Map<IEnumerable<Pilot>, IEnumerable<PilotDto>>(
+            return _mapper.Map<IEnumerable<Ticket>, IEnumerable<TicketDto>>(
                 _repository.Get());
         }
 
-        public PilotDto GetById(object id)
+        public TicketDto GetById(object id)
         {
-            return _mapper.Map<Pilot, PilotDto>(
-                _repository.Get().FirstOrDefault(p => p.Id == (int)id));
+            return _mapper.Map<Ticket, TicketDto>(
+                _repository.Get().FirstOrDefault(t => t.Id == (int)id));
         }
 
-        public void Add(PilotDto pilotDto)
+        public void Add(TicketDto dto)
         {
             _repository.Create(
-                _mapper.Map<PilotDto, Pilot>(pilotDto));
+                _mapper.Map<TicketDto, Ticket>(dto));
         }
 
-        public void Update(object id, PilotDto pilotDto)
+        public void Update(object id, TicketDto dto)
         {
-            _repository.Update((int)id, _mapper.Map<PilotDto, Pilot>(pilotDto));
+            _repository.Update((int)id,
+                _mapper.Map<TicketDto, Ticket>(dto));
         }
 
         public void Delete(object id)

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Academy2018_.NET_Homework4.Infrastructure.Abstractions;
+using Academy2018_.NET_Homework4.Infrastructure.Models;
 
-namespace Academy2018_.NET_Homework4.Infrastructure.Models
+namespace Academy2018_.NET_Homework4.Shared.DTOs
 {
-    public class Flight
+    public class FlightDto
     {
         public Guid Number { get; set; }
 

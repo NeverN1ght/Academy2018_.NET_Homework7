@@ -6,42 +6,42 @@ using Academy2018_.NET_Homework4.Infrastructure.Models;
 
 namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
 {
-    public class PilotsRepository: IRepository<Pilot>
+    public class DeparturesRepository: IRepository<Departure>
     {
         private readonly DataSource _dataSource;
 
-        public PilotsRepository(DataSource dataSource)
+        public DeparturesRepository(DataSource dataSource)
         {
             _dataSource = dataSource;
         }
 
-        public IEnumerable<Pilot> Get()
+        public IEnumerable<Departure> Get()
         {
-            return _dataSource.Pilots;
+            return _dataSource.Departures;
         }
 
-        public void Create(Pilot entity)
+        public void Create(Departure entity)
         {
-            entity.Id = _dataSource.Pilots.Max(p => p.Id) + 1;
-            _dataSource.Pilots.Add(entity);
+            entity.Id = _dataSource.Departures.Max(d => d.Id) + 1;
+            _dataSource.Departures.Add(entity);
         }
 
-        public void Update(object id, Pilot entity)
+        public void Update(object id, Departure entity)
         {
             Delete(id);
             entity.Id = (int)id;
-            _dataSource.Pilots.Add(entity);
+            _dataSource.Departures.Add(entity);
         }
 
         public void Delete(object id)
         {
-            var entity = _dataSource.Pilots.Find(p => p.Id == (int)id);
+            var entity = _dataSource.Departures.Find(d => d.Id == (int) id);
             Delete(entity);
         }
 
-        public void Delete(Pilot entity)
+        public void Delete(Departure entity)
         {
-            _dataSource.Pilots.Remove(entity);
+            _dataSource.Departures.Remove(entity);
         }
     }
 }

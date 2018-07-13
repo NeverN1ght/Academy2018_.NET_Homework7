@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Academy2018_.NET_Homework4.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework4.Infrastructure.Models;
 
 namespace Academy2018_.NET_Homework4.Infrastructure.Data
@@ -28,6 +26,8 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
         public DataSource()
         {
             #region Pilots initializing                      
+
+            Pilots = new List<Pilot>();
 
             Pilots.Add(new Pilot {
                 Id = 1,
@@ -61,6 +61,8 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
             #endregion
 
             #region Stewardesses initializing
+
+            Stewardesses = new List<Stewardesse>();
 
             Stewardesses.Add(new Stewardesse {
                 Id = 1,
@@ -109,6 +111,8 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
 
             #region Crews initializing
 
+            Crews = new List<Crew>();
+
             Crews.Add(new Crew {
                 Id = 1,
                 Pilot = Pilots.Find(p => p.Id == 1),
@@ -137,6 +141,8 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
             #endregion
 
             #region AirplaneTypes initializing
+
+            AirplaneTypes = new List<AirplaneType>();
 
             AirplaneTypes.Add(new AirplaneType {
                 Id = 1,
@@ -173,6 +179,8 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
 
             #region Airplanes initializing
 
+            Airplanes = new List<Airplane>();
+
             Airplanes.Add(new Airplane {
                 Id = 1,
                 Name = "A. Dayneka",
@@ -199,11 +207,13 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
                 Name = "SKYTEAM",
                 Type = AirplaneTypes.Find(t => t.Id == 5),
                 ExploitationTerm = new TimeSpan(700, 0, 0, 0),
-                ReleaseDate = new DateTime(1989, 2, 30)
+                ReleaseDate = new DateTime(1989, 2, 27)
             });
             #endregion
 
             #region Tickets initializing
+
+            Tickets = new List<Ticket>();
 
             var flightNumbers = new List<Guid>();
             for (int i = 0; i < 3; i++)
@@ -265,6 +275,8 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
 
             #region Flights initializing
 
+            Flights = new List<Flight>();
+
             Flights.Add(new Flight {
                 Number = flightNumbers[0],
                 ArrivalTime = new DateTime(2018, 07, 12, 12, 24, 0),
@@ -287,9 +299,9 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
             });
             Flights.Add(new Flight {
                 Number = flightNumbers[2],
-                ArrivalTime = new DateTime(2018, 10, 5, 50, 21, 0),
+                ArrivalTime = new DateTime(2018, 10, 5, 20, 21, 0),
                 DeparturePoint = "Borispol, Ukraine",
-                DestinationPoint = "Katowice, Polans",
+                DestinationPoint = "Katowice, Poland",
                 Tickets = Tickets
                     .Select(t => t)
                     .Where(t => t.FlightNumber == flightNumbers[2])
@@ -299,6 +311,8 @@ namespace Academy2018_.NET_Homework4.Infrastructure.Data
             #endregion
 
             #region Departures initializing
+
+            Departures = new List<Departure>();
 
             Departures.Add(new Departure {
                 Id = 1,
