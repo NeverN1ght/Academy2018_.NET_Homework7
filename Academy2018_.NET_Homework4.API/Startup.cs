@@ -3,13 +3,16 @@ using Academy2018_.NET_Homework5.Core.Services;
 using Academy2018_.NET_Homework5.Core.Validation;
 using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework5.Infrastructure.Data;
+using Academy2018_.NET_Homework5.Infrastructure.Database;
 using Academy2018_.NET_Homework5.Infrastructure.Models;
 using Academy2018_.NET_Homework5.Infrastructure.Repositories;
+using Academy2018_.NET_Homework5.Infrastructure.UnitOfWork;
 using Academy2018_.NET_Homework5.Shared.DTOs;
 using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,6 +33,11 @@ namespace Academy2018_.NET_Homework5.API
             services.AddMvc();
 
             services.AddSingleton<DataSource>();
+
+            services.AddDbContext<AirportContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("AirportDB")));
+
+            services.AddTransient<UnitOfWork>();
 
             services.AddScoped<IService<PilotDto>, PilotsService>();
             services.AddScoped<IService<FlightDto>, FlightsService>();
