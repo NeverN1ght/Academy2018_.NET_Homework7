@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Academy2018_.NET_Homework4.Infrastructure\Academy2018_.NET_Homework4.Infrastructure.csproj" />
-    <ProjectReference Include="..\Academy2018_.NET_Homework4.Shared\Academy2018_.NET_Homework4.Shared.csproj" />
+    <ProjectReference Include="..\Academy2018_.NET_Homework4.Infrastructure\Academy2018_.NET_Homework5.Infrastructure.csproj" />
+    <ProjectReference Include="..\Academy2018_.NET_Homework4.Shared\Academy2018_.NET_Homework5.Shared.csproj" />
   </ItemGroup>
 
 </Project>

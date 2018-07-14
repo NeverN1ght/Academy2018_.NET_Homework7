@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Academy2018_.NET_Homework4.Infrastructure.Abstractions;
-using Academy2018_.NET_Homework4.Infrastructure.Data;
-using Academy2018_.NET_Homework4.Infrastructure.Models;
+using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
+using Academy2018_.NET_Homework5.Infrastructure.Data;
+using Academy2018_.NET_Homework5.Infrastructure.Models;
 
-namespace Academy2018_.NET_Homework4.Infrastructure.Repositories
+namespace Academy2018_.NET_Homework5.Infrastructure.Repositories
 {
     public class FlightsRepository: IRepository<Flight>
     {

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Academy2018_.NET_Homework4.Core.Abstractions;
-using Academy2018_.NET_Homework4.Shared.DTOs;
-using Academy2018_.NET_Homework4.Shared.Exceptions;
+﻿using Academy2018_.NET_Homework5.Core.Abstractions;
+using Academy2018_.NET_Homework5.Shared.DTOs;
+using Academy2018_.NET_Homework5.Shared.Exceptions;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Academy2018_.NET_Homework4.API.Controllers
+namespace Academy2018_.NET_Homework5.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/Flights")]

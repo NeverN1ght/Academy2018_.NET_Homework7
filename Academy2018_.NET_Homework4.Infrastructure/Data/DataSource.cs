@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Academy2018_.NET_Homework4.Infrastructure.Models;
+using Academy2018_.NET_Homework5.Infrastructure.Models;
 
-namespace Academy2018_.NET_Homework4.Infrastructure.Data
+namespace Academy2018_.NET_Homework5.Infrastructure.Data
 {
     public class DataSource
     {

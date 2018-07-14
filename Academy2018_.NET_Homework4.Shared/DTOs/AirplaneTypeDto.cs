@@ -1,4 +1,4 @@
-﻿namespace Academy2018_.NET_Homework4.Shared.DTOs
+﻿namespace Academy2018_.NET_Homework5.Shared.DTOs
 {
     public class AirplaneTypeDto
     {

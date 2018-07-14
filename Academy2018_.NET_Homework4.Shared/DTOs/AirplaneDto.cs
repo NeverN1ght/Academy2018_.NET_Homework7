@@ -1,7 +1,7 @@
 ﻿using System;
-using Academy2018_.NET_Homework4.Infrastructure.Models;
+using Academy2018_.NET_Homework5.Infrastructure.Models;
 
-namespace Academy2018_.NET_Homework4.Shared.DTOs
+namespace Academy2018_.NET_Homework5.Shared.DTOs
 {
     public class AirplaneDto
     {

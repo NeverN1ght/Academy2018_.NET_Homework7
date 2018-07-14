@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Academy2018_.NET_Homework4.Core.Abstractions;
-using Academy2018_.NET_Homework4.Infrastructure.Abstractions;
-using Academy2018_.NET_Homework4.Infrastructure.Models;
-using Academy2018_.NET_Homework4.Shared.DTOs;
-using Academy2018_.NET_Homework4.Shared.Exceptions;
+using Academy2018_.NET_Homework5.Core.Abstractions;
+using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
+using Academy2018_.NET_Homework5.Infrastructure.Models;
+using Academy2018_.NET_Homework5.Shared.DTOs;
+using Academy2018_.NET_Homework5.Shared.Exceptions;
 using AutoMapper;
 using FluentValidation;
 
-namespace Academy2018_.NET_Homework4.Core.Services
+namespace Academy2018_.NET_Homework5.Core.Services
 {
     public class FlightsService: IService<FlightDto>
     {

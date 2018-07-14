@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Threading.Tasks;
-using Academy2018_.NET_Homework4.Core.Abstractions;
-using Academy2018_.NET_Homework4.Core.Services;
-using Academy2018_.NET_Homework4.Core.Validation;
-using Academy2018_.NET_Homework4.Infrastructure.Abstractions;
-using Academy2018_.NET_Homework4.Infrastructure.Data;
-using Academy2018_.NET_Homework4.Infrastructure.Models;
-using Academy2018_.NET_Homework4.Infrastructure.Repositories;
-using Academy2018_.NET_Homework4.Shared.DTOs;
+﻿using Academy2018_.NET_Homework5.Core.Abstractions;
+using Academy2018_.NET_Homework5.Core.Services;
+using Academy2018_.NET_Homework5.Core.Validation;
+using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
+using Academy2018_.NET_Homework5.Infrastructure.Data;
+using Academy2018_.NET_Homework5.Infrastructure.Models;
+using Academy2018_.NET_Homework5.Infrastructure.Repositories;
+using Academy2018_.NET_Homework5.Shared.DTOs;
 using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
-namespace Academy2018_.NET_Homework4.API
+namespace Academy2018_.NET_Homework5.API
 {
     public class Startup
     {

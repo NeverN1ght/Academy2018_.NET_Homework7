@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Academy2018_.NET_Homework4.Core.Abstractions
+namespace Academy2018_.NET_Homework5.Core.Abstractions
 {
     public interface IService<TDto> 
         where TDto: class

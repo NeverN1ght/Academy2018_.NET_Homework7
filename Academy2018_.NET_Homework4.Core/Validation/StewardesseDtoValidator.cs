@@ -1,8 +1,8 @@
 ﻿using System;
-using Academy2018_.NET_Homework4.Shared.DTOs;
+using Academy2018_.NET_Homework5.Shared.DTOs;
 using FluentValidation;
 
-namespace Academy2018_.NET_Homework4.Core.Validation
+namespace Academy2018_.NET_Homework5.Core.Validation
 {
     public class StewardesseDtoValidator: AbstractValidator<StewardesseDto>
     {

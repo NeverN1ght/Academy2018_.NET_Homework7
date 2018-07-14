@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Academy2018_.NET_Homework4.Shared.Exceptions
+namespace Academy2018_.NET_Homework5.Shared.Exceptions
 {
     public class NotExistException : Exception
     {

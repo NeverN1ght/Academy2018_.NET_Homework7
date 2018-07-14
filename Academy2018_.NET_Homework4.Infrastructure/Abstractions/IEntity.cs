@@ -1,4 +1,4 @@
-﻿namespace Academy2018_.NET_Homework4.Infrastructure.Abstractions
+﻿namespace Academy2018_.NET_Homework5.Infrastructure.Abstractions
 {
     public interface IEntity
     {
