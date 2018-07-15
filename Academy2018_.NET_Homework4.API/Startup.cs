@@ -1,9 +1,12 @@
-﻿using Academy2018_.NET_Homework5.Core.Abstractions;
+﻿using System;
+using System.Collections.Generic;
+using Academy2018_.NET_Homework5.Core.Abstractions;
 using Academy2018_.NET_Homework5.Core.Services;
 using Academy2018_.NET_Homework5.Core.Validation;
 using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework5.Infrastructure.Data;
 using Academy2018_.NET_Homework5.Infrastructure.Database;
+using Academy2018_.NET_Homework5.Infrastructure.Database.Extensions;
 using Academy2018_.NET_Homework5.Infrastructure.Models;
 using Academy2018_.NET_Homework5.Infrastructure.Repositories;
 using Academy2018_.NET_Homework5.Infrastructure.UnitOfWork;
@@ -34,8 +37,7 @@ namespace Academy2018_.NET_Homework5.API
 
             services.AddSingleton<DataSource>();
 
-            services.AddDbContext<AirportContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("AirportDB")));
+            services.AddDbContext<AirportContext>();
 
             services.AddTransient<UnitOfWork>();
 
@@ -76,6 +78,13 @@ namespace Academy2018_.NET_Homework5.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+
+            // preparing database
+            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = scope.ServiceProvider.GetService<AirportContext>();
+                context.EnsureDatabaseSeeded();
             }
 
             app.UseMvc();

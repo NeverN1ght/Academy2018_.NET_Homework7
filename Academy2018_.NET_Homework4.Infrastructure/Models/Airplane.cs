@@ -9,12 +9,17 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Models
         [Key]
         public int Id { get; set; }
 
+        [Required]
+        [StringLength(30)]
         public string Name { get; set; }
 
+        [Required]
         public AirplaneType Type { get; set; }
 
+        [Required]
         public DateTime ReleaseDate { get; set; }
 
+        [Required]
         public TimeSpan ExploitationTerm { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework5.Infrastructure.Data;
 using Academy2018_.NET_Homework5.Infrastructure.Database;
 using Academy2018_.NET_Homework5.Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Academy2018_.NET_Homework5.Infrastructure.Repositories
 {
@@ -19,7 +20,8 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Repositories
 
         public IEnumerable<Flight> Get()
         {
-            return _ctx.Flights;
+            return _ctx.Flights
+                .Include(f => f.Tickets);
         }
 
         public object Create(Flight entity)

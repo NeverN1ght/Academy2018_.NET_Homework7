@@ -18,7 +18,8 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Repositories
 
         public IEnumerable<Airplane> Get()
         {
-            return _ctx.Airplanes;
+            return _ctx.Airplanes
+                .Include(a => a.Type);
         }
 
         public object Create(Airplane entity)

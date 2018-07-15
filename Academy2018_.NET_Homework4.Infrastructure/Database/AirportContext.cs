@@ -1,13 +1,13 @@
-﻿using Academy2018_.NET_Homework5.Infrastructure.Database.Configurations;
-using Academy2018_.NET_Homework5.Infrastructure.Models;
+﻿using Academy2018_.NET_Homework5.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Academy2018_.NET_Homework5.Infrastructure.Database
 {
     public class AirportContext: DbContext
     {
-        public AirportContext(DbContextOptions<AirportContext> options) : base(options)
-        {
+        public AirportContext(): base()
+        {        
+            Database.Migrate();
             Database.EnsureCreated();
         }
 
@@ -20,17 +20,10 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Database
         public DbSet<Stewardesse> Stewardesses { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            modelBuilder.ApplyConfiguration(new AirplanesConfiguration());
-            modelBuilder.ApplyConfiguration(new PilotsConfiguration());
-            modelBuilder.ApplyConfiguration(new AirplaneTypesConfiguration());
-            modelBuilder.ApplyConfiguration(new TicketsConfiguration());
-            modelBuilder.ApplyConfiguration(new StewardessesConfiguration());
-            modelBuilder.ApplyConfiguration(new CrewsConfiguration());
-            modelBuilder.ApplyConfiguration(new DeparturesConfiguration());
-            modelBuilder.ApplyConfiguration(new FlightsConfiguration());
-            base.OnModelCreating(modelBuilder);
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=AirportDB;Trusted_Connection=True;Integrated Security=True;");
+            base.OnConfiguring(optionsBuilder);
         }
     }
 }

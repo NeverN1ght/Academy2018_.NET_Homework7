@@ -4,6 +4,7 @@ using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework5.Infrastructure.Data;
 using Academy2018_.NET_Homework5.Infrastructure.Database;
 using Academy2018_.NET_Homework5.Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Academy2018_.NET_Homework5.Infrastructure.Repositories
 {
@@ -18,7 +19,9 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Repositories
 
         public IEnumerable<Crew> Get()
         {
-            return _ctx.Crews;
+            return _ctx.Crews
+                .Include(c => c.Pilot)
+                .Include(c => c.Stewardesses);
         }
 
         public object Create(Crew entity)

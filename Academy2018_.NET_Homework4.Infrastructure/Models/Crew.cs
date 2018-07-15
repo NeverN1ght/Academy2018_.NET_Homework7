@@ -9,8 +9,10 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Models
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public Pilot Pilot { get; set; }
 
+        [Required]
         public List<Stewardesse> Stewardesses { get; set; }
     }
 }
