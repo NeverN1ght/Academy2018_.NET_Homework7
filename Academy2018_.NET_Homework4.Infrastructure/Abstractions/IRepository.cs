@@ -17,6 +17,8 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Abstractions
 
         void Delete(TEntity entity);
 
+        void SaveChanges();
+
         bool IsExist(object id);
     }
 }

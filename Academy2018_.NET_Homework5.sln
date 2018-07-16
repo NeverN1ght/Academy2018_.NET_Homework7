@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Academy2018_.NET_Homework5.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Academy2018_.NET_Homework5.Shared", "Academy2018_.NET_Homework4.Shared\Academy2018_.NET_Homework5.Shared.csproj", "{CCD573EB-A1D9-4C2F-9772-94C3763F6A8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy2018_.NET_Homework5.Tests", "Academy2018_.NET_Homework5.Tests\Academy2018_.NET_Homework5.Tests.csproj", "{BED4D222-0ED8-40F9-A9CF-C0BC302BCC9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CCD573EB-A1D9-4C2F-9772-94C3763F6A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCD573EB-A1D9-4C2F-9772-94C3763F6A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCD573EB-A1D9-4C2F-9772-94C3763F6A8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED4D222-0ED8-40F9-A9CF-C0BC302BCC9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED4D222-0ED8-40F9-A9CF-C0BC302BCC9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED4D222-0ED8-40F9-A9CF-C0BC302BCC9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED4D222-0ED8-40F9-A9CF-C0BC302BCC9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

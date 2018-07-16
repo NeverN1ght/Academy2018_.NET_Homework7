@@ -56,6 +56,11 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Repositories.Basic
             _ctx.Set<TEntity>().Remove(entity);
         }
 
+        public void SaveChanges()
+        {
+            _ctx.SaveChanges();
+        }
+
         public bool IsExist(object id)
         {
             return _ctx.Set<TEntity>().Find(id) != null;
