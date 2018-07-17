@@ -16,7 +16,7 @@ namespace Academy2018_.NET_Homework5.API.Controllers
     {
         private readonly IService<PilotDto> _pilotsService;
 
-        public PilotsController(IService<PilotDto> pilotsService, AirportContext ctx)
+        public PilotsController(IService<PilotDto> pilotsService)
         {
             _pilotsService = pilotsService;
         }
@@ -52,9 +52,9 @@ namespace Academy2018_.NET_Homework5.API.Controllers
                 return CreatedAtAction("Get",
                     _pilotsService.GetById(createdId));
             }
-            catch (ValidationException ex)
+            catch (ValidationException)
             {
-                return BadRequest(ex.Errors);
+                return BadRequest();
             }
             catch (NullBodyException)
             {

@@ -7,7 +7,6 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Database
     {
         public AirportContext(): base()
         {        
-            Database.Migrate();
             Database.EnsureCreated();
         }
 

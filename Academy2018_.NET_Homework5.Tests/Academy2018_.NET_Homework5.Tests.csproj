@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Academy2018_.NET_Homework4.API\Academy2018_.NET_Homework5.API.csproj" />
     <ProjectReference Include="..\Academy2018_.NET_Homework4.Core\Academy2018_.NET_Homework5.Core.csproj" />
     <ProjectReference Include="..\Academy2018_.NET_Homework4.Shared\Academy2018_.NET_Homework5.Shared.csproj" />
   </ItemGroup>
