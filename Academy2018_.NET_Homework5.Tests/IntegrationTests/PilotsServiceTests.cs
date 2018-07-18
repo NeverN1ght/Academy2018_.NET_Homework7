@@ -24,6 +24,7 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
         private AirportContext _context;
         private IRepository<Pilot> _repository;
         private IService<PilotDto> _service;
+        private Pilot[] testData;
 
         public PilotsServiceTests()
         {
@@ -33,14 +34,19 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
                         cfg.CreateMap<PilotDto, Pilot>();
                         cfg.CreateMap<Pilot, PilotDto>();
                     }));
-            _validator = new PilotValidator();          
+            _validator = new PilotValidator();
+            _context = new AirportContext();
+            _repository = new PilotsRepository(_context);
+
+            _service = new PilotsService(
+                _repository,
+                _mapper,
+                _validator);
         }
 
         [SetUp]
         public void Init()
-        {
-            _context = new AirportContext();
-
+        {         
             // deleting database if it exist
             _context.Database.EnsureDeleted();
 
@@ -48,7 +54,7 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
             _context.Database.EnsureCreated();
 
             // test data
-            var testData = new Pilot[]
+            testData = new Pilot[]
             {
                 new Pilot
                 {
@@ -76,19 +82,13 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
             // adding test data
             _context.Pilots.AddRange(testData);
             _context.SaveChanges();
-
-            _repository = new PilotsRepository(_context);
-
-            _service = new PilotsService(
-                _repository,
-                _mapper,
-                _validator);
         }
 
         [TearDown]
         public void Clear()
         {
             // clear database after test
+            _context.Pilots.RemoveRange(testData);
             _context.Database.EnsureDeleted();
         }
 

@@ -79,19 +79,69 @@ namespace Academy2018_.NET_Homework5.Tests.ControllerTests
             Assert.AreEqual(400, result.StatusCode);
         }
 
-        //fix
         [Test]
         public void Put_When_dto_is_valid_and_id_is_exist_Then_return_status_code_200()
         {
             var service = A.Fake<IService<PilotDto>>();
-            A.CallTo(() => service.Update(A<int>._, A<PilotDto>._));
+            var validDto = new PilotDto
+            {
+                FirstName = "Sanya",
+                LastName = "Alexanrovich",
+                Birthdate = new DateTime(1989, 12, 19),
+                Experience = 10
+            };
+            var existId = 1;
+            A.CallTo(() => service.Update(existId, validDto));
+            var controller = new PilotsController(service);
+            var dto = validDto;
+            var id = existId;
+
+            var result = controller.Put(id, dto) as StatusCodeResult;
+
+            Assert.AreEqual(200, result.StatusCode);
+        }
+
+        [Test]
+        public void Put_When_id_is_not_exist_Then_return_status_code_404()
+        {
+            var service = A.Fake<IService<PilotDto>>();
+            var notExistId = 8485;
+            A.CallTo(() => service.Update(notExistId, A<PilotDto>._)).Throws(new NotExistException());
             var controller = new PilotsController(service);
             var dto = new PilotDto();
-            var id = 2;
+            var id = notExistId;
 
-            var result = (StatusCodeResult)controller.Post(dto);
+            var result = controller.Put(id, dto) as StatusCodeResult;
 
-            Assert.AreEqual(result.StatusCode, 201);
+            Assert.AreEqual(404, result.StatusCode);
+        }
+
+        [Test]
+        public void Delete_When_id_is_exist_Then_return_status_code_204()
+        {
+            var service = A.Fake<IService<PilotDto>>();
+            var existId = 1;
+            A.CallTo(() => service.Delete(existId));
+            var controller = new PilotsController(service);
+            var id = existId;
+
+            var result = controller.Delete(id) as StatusCodeResult;
+
+            Assert.AreEqual(204, result.StatusCode);
+        }
+
+        [Test]
+        public void Delete_When_id_is_not_exist_Then_return_status_code_404()
+        {
+            var service = A.Fake<IService<PilotDto>>();
+            var notExistId = 8485;
+            A.CallTo(() => service.Delete(notExistId)).Throws(new NotExistException());
+            var controller = new PilotsController(service);
+            var id = notExistId;
+
+            var result = controller.Delete(id) as StatusCodeResult;
+
+            Assert.AreEqual(404, result.StatusCode);
         }
     }
 }
