@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Academy2018_.NET_Homework5.Core.Abstractions;
 using Academy2018_.NET_Homework5.Core.Services;
+using Academy2018_.NET_Homework5.Core.Services.Data;
 using Academy2018_.NET_Homework5.Core.Validation;
 using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework5.Infrastructure.Database;
@@ -9,6 +12,7 @@ using Academy2018_.NET_Homework5.Infrastructure.Database.Extensions;
 using Academy2018_.NET_Homework5.Infrastructure.Models;
 using Academy2018_.NET_Homework5.Infrastructure.Repositories;
 using Academy2018_.NET_Homework5.Shared.DTOs;
+using Academy2018_.NET_Homework5.Shared.DTOs.Json;
 using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +47,7 @@ namespace Academy2018_.NET_Homework5.API
             services.AddScoped<IService<AirplaneDto>, AirplanesService>();
             services.AddScoped<IService<AirplaneTypeDto>, AirplaneTypesService>();
             services.AddScoped<IService<CrewDto>, CrewsService>();
+            services.AddScoped<CrewsLoadService>();
 
             services.AddTransient<AbstractValidator<Pilot>, PilotValidator>();
             services.AddTransient<AbstractValidator<Airplane>, AirplaneValidator>();
@@ -61,6 +66,7 @@ namespace Academy2018_.NET_Homework5.API
             services.AddTransient<IRepository<Airplane>, AirplanesRepository>();
             services.AddTransient<IRepository<AirplaneType>, AirplaneTypesRepository>();
             services.AddTransient<IRepository<Crew>, CrewsRepository>();
+            services.AddTransient<CrewsRepository>();
             
             var mapper = MapperConfiguration().CreateMapper();
             services.AddTransient(_ => mapper);
@@ -111,6 +117,24 @@ namespace Academy2018_.NET_Homework5.API
 
                 cfg.CreateMap<Departure, DepartureDto>();
                 cfg.CreateMap<DepartureDto, Departure>();
+
+                cfg.CreateMap<JsonPilotDto, Pilot>()
+                    .ForMember(p => p.FirstName, opt => opt.MapFrom(j => j.FirstName))
+                    .ForMember(p => p.LastName, opt => opt.MapFrom(j => j.LastName))
+                    .ForMember(p => p.Birthdate, opt => opt.MapFrom(j => j.BirthDate))
+                    .ForMember(p => p.Experience, opt => opt.MapFrom(j => j.Exp))
+                    .ForMember(p => p.Id, opt => opt.UseValue(0));
+
+                cfg.CreateMap<JsonStewardessDto, Stewardesse>()
+                    .ForMember(s => s.FirstName, opt => opt.MapFrom(j => j.FirstName))
+                    .ForMember(s => s.LastName, opt => opt.MapFrom(j => j.LastName))
+                    .ForMember(s => s.Birthdate, opt => opt.MapFrom(j => j.BirthDate))
+                    .ForMember(s => s.Id, opt => opt.UseValue(0));
+
+                cfg.CreateMap<JsonCrewDto, Crew>()
+                    .ForMember(c => c.Pilot, opt => opt.MapFrom(j => j.Pilot.First()))
+                    .ForMember(c => c.Stewardesses, opt => opt.MapFrom(j => j.Stewardess))
+                    .ForMember(c => c.Id, opt => opt.UseValue(0));
             });
 
             return config;

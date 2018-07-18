@@ -1,24 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Academy2018_.NET_Homework5.Infrastructure.Abstractions
 {
     public interface IRepository<TEntity> 
         where TEntity: class
     {
-        IEnumerable<TEntity> Get();
+        Task<List<TEntity>> GetAsync();
 
-        TEntity Get(object id);
+        Task<TEntity> GetAsync(object id);
 
-        object Create(TEntity entity);
+        Task<object> CreateAsync(TEntity entity);
 
-        void Update(object id, TEntity entity);
+        Task UpdateAsync(object id, TEntity entity);
 
-        void Delete(object id);
+        Task DeleteAsync(object id);
 
-        void Delete(TEntity entity);
+        Task DeleteAsync(TEntity entity);
 
-        void SaveChanges();
+        Task SaveChangesAsync();
 
-        bool IsExist(object id);
+        Task<bool> IsExistAsync(object id);
     }
 }

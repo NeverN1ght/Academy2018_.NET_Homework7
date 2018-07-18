@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework5.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Academy2018_.NET_Homework5.Infrastructure.Repositories.Basic
 {
@@ -19,51 +21,51 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Repositories.Basic
             _ctx = ctx;
         }
 
-        public virtual IEnumerable<TEntity> Get()
+        public virtual async Task<List<TEntity>> GetAsync()
         {
-            return _ctx.Set<TEntity>();
+            return await _ctx.Set<TEntity>().ToListAsync();
         }
 
-        public TEntity Get(object id)
+        public async Task<TEntity> GetAsync(object id)
         {
-            return _ctx.Set<TEntity>().Find(id);
+            return await _ctx.Set<TEntity>().FindAsync(id);
         }
 
-        public object Create(TEntity entity)
+        public async Task<object> CreateAsync(TEntity entity)
         {
-            _ctx.Set<TEntity>().Add(entity);
+            await _ctx.Set<TEntity>().AddAsync(entity);
 
             // make save to get created entity id
-            _ctx.SaveChanges();
+            await _ctx.SaveChangesAsync();
             return entity.Id;
         }
 
-        public void Update(object id, TEntity entity)
+        public async Task UpdateAsync(object id, TEntity entity)
         {
             entity.Id = (int)id;
-            var existedEntity = _ctx.Set<TEntity>().Find(id);
+            var existedEntity = await _ctx.Set<TEntity>().FindAsync(id);
             _ctx.Entry(existedEntity).CurrentValues.SetValues(entity);
         }
 
-        public void Delete(object id)
+        public async Task DeleteAsync(object id)
         {
-            var entity = _ctx.Set<TEntity>().Find(id);
-            Delete(entity);
+            var entity = await _ctx.Set<TEntity>().FindAsync(id);
+            await DeleteAsync(entity);
         }
 
-        public void Delete(TEntity entity)
+        public async Task DeleteAsync(TEntity entity)
         {
-            _ctx.Set<TEntity>().Remove(entity);
+            await Task.Run(() => _ctx.Set<TEntity>().Remove(entity));
         }
 
-        public void SaveChanges()
+        public async Task SaveChangesAsync()
         {
-            _ctx.SaveChanges();
+            await _ctx.SaveChangesAsync();
         }
 
-        public bool IsExist(object id)
+        public async Task<bool> IsExistAsync(object id)
         {
-            return _ctx.Set<TEntity>().Find(id) != null;
+            return await _ctx.Set<TEntity>().FindAsync(id) != null;
         }
     }
 }

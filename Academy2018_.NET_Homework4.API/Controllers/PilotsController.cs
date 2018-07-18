@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Academy2018_.NET_Homework5.Core.Abstractions;
 using Academy2018_.NET_Homework5.Infrastructure.Database;
 using Academy2018_.NET_Homework5.Infrastructure.Models;
@@ -23,18 +24,18 @@ namespace Academy2018_.NET_Homework5.API.Controllers
 
         // GET: api/Pilots
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_pilotsService.GetAll());
+            return Ok(await _pilotsService.GetAllAsync());
         }
 
         // GET: api/Pilots/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                return Ok(_pilotsService.GetById(id));
+                return Ok(await _pilotsService.GetByIdAsync(id));
             }
             catch (NotExistException)
             {
@@ -44,13 +45,13 @@ namespace Academy2018_.NET_Homework5.API.Controllers
         
         // POST: api/Pilots
         [HttpPost]
-        public IActionResult Post([FromBody]PilotDto pilotDto)
+        public async Task<IActionResult> Post([FromBody]PilotDto pilotDto)
         {
             try
             {
-                var createdId = _pilotsService.Add(pilotDto);
+                var createdId = await _pilotsService.AddAsync(pilotDto);
                 return CreatedAtAction("Get",
-                    _pilotsService.GetById(createdId));
+                    await _pilotsService.GetByIdAsync(createdId));
             }
             catch (ValidationException)
             {
@@ -68,11 +69,11 @@ namespace Academy2018_.NET_Homework5.API.Controllers
         
         // PUT: api/Pilots/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]PilotDto pilotDto)
+        public async Task<IActionResult> Put(int id, [FromBody]PilotDto pilotDto)
         {
             try
             {
-                _pilotsService.Update(id, pilotDto);
+                await _pilotsService.UpdateAsync(id, pilotDto);
                 return Ok();
             }
             catch (NotExistException)
@@ -91,11 +92,11 @@ namespace Academy2018_.NET_Homework5.API.Controllers
         
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                _pilotsService.Delete(id);
+                await _pilotsService.DeleteAsync(id);
                 return NoContent();
             }
             catch (NotExistException)

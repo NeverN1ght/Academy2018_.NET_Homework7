@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Academy2018_.NET_Homework5.Core.Abstractions;
 using Academy2018_.NET_Homework5.Core.Services;
 using Academy2018_.NET_Homework5.Core.Validation;
@@ -96,10 +97,9 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
         }
 
         [Test]
-        public void GetAll_When_is_called_Then_return_data()
+        public async Task GetAll_When_is_called_Then_return_data()
         {
-            var result = _service.GetAll()
-                .ToList();
+            var result = (await _service.GetAllAsync()).ToList();
 
 
             Assert.IsNotEmpty(result);
@@ -121,12 +121,12 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
         }
 
         [Test]
-        public void GetById_When_id_is_exist_Then_return_entity()
+        public async Task GetById_When_id_is_exist_Then_return_entity()
         {
             var existId = _context.Pilots
                 .SingleOrDefault(p => p.FirstName == "Petro").Id;
 
-            var result = _service.GetById(existId);
+            var result = await _service.GetByIdAsync(existId);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Id, existId);
@@ -140,7 +140,7 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
         {
             var notExistId = 98465;
 
-            Assert.Throws<NotExistException>(() => _service.GetById(notExistId));
+            Assert.Throws<NotExistException>(async () => await _service.GetByIdAsync(notExistId));
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
         {
             PilotDto nullDto = null;
 
-            Assert.Throws<NullBodyException>(() => _service.Add(nullDto));
+            Assert.Throws<NullBodyException>(async () => await _service.AddAsync(nullDto));
         }
 
         [Test]
@@ -162,11 +162,11 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
                 Experience = -2
             };
 
-            Assert.Throws<ValidationException>(() => _service.Add(notValidDto));
+            Assert.Throws<ValidationException>(async () => await _service.AddAsync(notValidDto));
         }
 
         [Test]
-        public void Add_When_pilotDto_is_valid_Then_return_created_model_id()
+        public async Task Add_When_pilotDto_is_valid_Then_return_created_model_id()
         {
             var validDto = new PilotDto
             {
@@ -176,7 +176,7 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
                 Experience = 2
             };
 
-            var resultedId = _service.Add(validDto);
+            var resultedId = await _service.AddAsync(validDto);
             var createdId = _context.Pilots
                 .FirstOrDefault(p => p.FirstName == "Sanya").Id;
 
@@ -195,7 +195,7 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
                 Experience = 2
             };
 
-            Assert.Throws<NotExistException>(() => _service.Update(notExistId, validDto));
+            Assert.Throws<NotExistException>(async () => await _service.UpdateAsync(notExistId, validDto));
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
             var existId = _context.Pilots
                 .FirstOrDefault(p => p.FirstName == "Petro").Id;
 
-            Assert.Throws<NullBodyException>(() => _service.Update(existId, nullDto));
+            Assert.Throws<NullBodyException>(async () => await _service.UpdateAsync(existId, nullDto));
         }
 
         [Test]
@@ -221,11 +221,11 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
             var existId = _context.Pilots
                 .FirstOrDefault(p => p.FirstName == "Petro").Id;
 
-            Assert.Throws<ValidationException>(() => _service.Update(existId, notValidDto));
+            Assert.Throws<ValidationException>(async () => await _service.UpdateAsync(existId, notValidDto));
         }
 
         [Test]
-        public void Update_When_pilotDto_is_valid_Then_update()
+        public async Task Update_When_pilotDto_is_valid_Then_update()
         {
             var validDto = new PilotDto
             {
@@ -237,7 +237,7 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
             var existedPilot = _context.Pilots
                 .FirstOrDefault(p => p.FirstName == "Petro");
 
-            _service.Update(existedPilot.Id, validDto);
+            await _service.UpdateAsync(existedPilot.Id, validDto);
 
             Assert.AreEqual(existedPilot.FirstName, "Ivan");
         }
@@ -247,16 +247,16 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
         {
             var notExistId = 98465;
 
-            Assert.Throws<NotExistException>(() => _service.Delete(notExistId));
+            Assert.Throws<NotExistException>(async () => await _service.DeleteAsync(notExistId));
         }
 
         [Test]
-        public void Delete_When_id_is_exist_Then_delete()
+        public async Task Delete_When_id_is_exist_Then_delete()
         {
             var existId = _context.Pilots
                 .FirstOrDefault(p => p.FirstName == "Petro").Id;
 
-            _service.Delete(existId);
+            await _service.DeleteAsync(existId);
 
             Assert.IsNull(_context.Pilots.Find(existId));
         }

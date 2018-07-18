@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Academy2018_.NET_Homework5.Core.Abstractions
 {
     public interface IService<TDto> 
         where TDto: class
     {
-        IEnumerable<TDto> GetAll();
+        Task<IEnumerable<TDto>> GetAllAsync();
 
-        TDto GetById(object id);
+        Task<TDto> GetByIdAsync(object id);
 
-        object Add(TDto dto);
+        Task<object> AddAsync(TDto dto);
 
-        void Update(object id, TDto dto);
+        Task UpdateAsync(object id, TDto dto);
 
-        void Delete(object id);
+        Task DeleteAsync(object id);
     }
 }
