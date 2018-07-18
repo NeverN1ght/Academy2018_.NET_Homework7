@@ -16,6 +16,11 @@ using NUnit.Framework;
 
 namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
 {
+    /// <summary>
+    /// Если запускать тесты по одному, то всё работает нормально,
+    /// но если все вместе, то первый заходит нормально, а после него все фейлятся.
+    /// Я думал, что проблема в SetUp/TearDown, но так и не смог разобраться.
+    /// </summary>
     [TestFixture]
     public class PilotsServiceTests
     {
@@ -24,7 +29,6 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
         private AirportContext _context;
         private IRepository<Pilot> _repository;
         private IService<PilotDto> _service;
-        private Pilot[] testData;
 
         public PilotsServiceTests()
         {
@@ -54,7 +58,7 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
             _context.Database.EnsureCreated();
 
             // test data
-            testData = new Pilot[]
+            var testData = new Pilot[]
             {
                 new Pilot
                 {
@@ -88,7 +92,6 @@ namespace Academy2018_.NET_Homework5.Tests.IntegrationTests
         public void Clear()
         {
             // clear database after test
-            _context.Pilots.RemoveRange(testData);
             _context.Database.EnsureDeleted();
         }
 
