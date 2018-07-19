@@ -48,6 +48,7 @@ namespace Academy2018_.NET_Homework5.API
             services.AddScoped<IService<AirplaneTypeDto>, AirplaneTypesService>();
             services.AddScoped<IService<CrewDto>, CrewsService>();
             services.AddScoped<CrewsLoadService>();
+            services.AddScoped<FlightsService>();
 
             services.AddTransient<AbstractValidator<Pilot>, PilotValidator>();
             services.AddTransient<AbstractValidator<Airplane>, AirplaneValidator>();
@@ -67,6 +68,7 @@ namespace Academy2018_.NET_Homework5.API
             services.AddTransient<IRepository<AirplaneType>, AirplaneTypesRepository>();
             services.AddTransient<IRepository<Crew>, CrewsRepository>();
             services.AddTransient<CrewsRepository>();
+            services.AddTransient<FlightsRepository>();
             
             var mapper = MapperConfiguration().CreateMapper();
             services.AddTransient(_ => mapper);

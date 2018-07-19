@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Academy2018_.NET_Homework5.Core.Abstractions;
+using Academy2018_.NET_Homework5.Core.Services;
 using Academy2018_.NET_Homework5.Shared.DTOs;
 using Academy2018_.NET_Homework5.Shared.Exceptions;
 using FluentValidation;
@@ -12,9 +14,9 @@ namespace Academy2018_.NET_Homework5.API.Controllers
     [Route("api/Flights")]
     public class FlightsController : Controller
     {
-        private readonly IService<FlightDto> _flightsService;
+        private readonly FlightsService _flightsService;
 
-        public FlightsController(IService<FlightDto> flightsService)
+        public FlightsController(FlightsService flightsService)
         {
             _flightsService = flightsService;
         }
@@ -39,7 +41,21 @@ namespace Academy2018_.NET_Homework5.API.Controllers
                 return NotFound();
             }
         }
-        
+
+        // GET: api/Flights/Delay
+        [HttpGet("Delay")]
+        public async Task<IActionResult> QueryWithDelay()
+        {
+            try
+            {
+                return Ok(await _flightsService.GetFlightQueryWithDelay());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         // POST: api/Flights
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]FlightDto dto)

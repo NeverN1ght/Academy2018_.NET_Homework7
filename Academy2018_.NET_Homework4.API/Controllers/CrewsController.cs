@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Academy2018_.NET_Homework5.Core.Abstractions;
 using Academy2018_.NET_Homework5.Core.Services.Data;
 using Academy2018_.NET_Homework5.Shared.DTOs;
@@ -43,13 +44,19 @@ namespace Academy2018_.NET_Homework5.API.Controllers
             }
         }
 
-        // GET: api/Crews/
+        // GET: api/Crews/Load
         [HttpGet("Load")]
-        public async Task<IActionResult> LoadData()
+        public async Task<IActionResult> Load()
         {
-            var result = await _loadService.GetDataAsync("http://5b128555d50a5c0014ef1204.mockapi.io/crew");
-            await _loadService.SaveToDbAsync(result);
-            return Ok();
+            try
+            {
+                await _loadService.LoadLogAndSaveDataAsync("http://5b128555d50a5c0014ef1204.mockapi.io/crew");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST: api/Crews

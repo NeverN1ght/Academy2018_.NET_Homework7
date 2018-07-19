@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework5.Infrastructure.Database;
 using Academy2018_.NET_Homework5.Infrastructure.Models;
@@ -23,6 +24,34 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Repositories
             return await _ctx.Flights
                 .Include(f => f.Tickets)
                 .ToListAsync();
+        }
+
+        public Task<Flight> GetClosestInTimeWithDelay()
+        {
+            var taskCompletionSource = new TaskCompletionSource<Flight>();
+            var timer = new Timer
+            {
+                Interval = 5000,
+                Enabled = true
+            };
+            timer.Elapsed += (source, args) => {
+                try
+                {
+                    taskCompletionSource.SetResult(
+                        _ctx.Flights
+                            .Include(f => f.Tickets)
+                            .OrderBy(f => f.ArrivalTime)
+                            .First()
+                        );
+
+                    timer.Enabled = false;
+                }
+                catch (Exception ex)
+                {
+                    taskCompletionSource.SetException(ex);
+                }
+            };
+            return taskCompletionSource.Task;
         }
 
         public async Task<Flight> GetAsync(object id)

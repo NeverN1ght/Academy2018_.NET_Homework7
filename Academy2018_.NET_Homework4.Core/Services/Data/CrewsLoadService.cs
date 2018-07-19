@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -31,7 +32,17 @@ namespace Academy2018_.NET_Homework5.Core.Services.Data
             _validator = validator;
         }
 
-        public async Task<List<JsonCrewDto>> GetDataAsync(string uri)
+        public async Task LoadLogAndSaveDataAsync(string uri)
+        {
+            var data = await GetDataAsync(uri);
+
+            var firstTask = SaveToDbAsync(data);
+            var secondTask = WriteLogAsync(data);
+
+            await Task.WhenAll(firstTask, secondTask);
+        }
+
+        private async Task<List<JsonCrewDto>> GetDataAsync(string uri)
         {
             HttpWebRequest httpWebRequest = WebRequest.CreateHttp(uri);
             httpWebRequest.Method = "GET";
@@ -45,7 +56,7 @@ namespace Academy2018_.NET_Homework5.Core.Services.Data
             return result;
         }
 
-        public async Task SaveToDbAsync(List<JsonCrewDto> data)
+        private async Task SaveToDbAsync(List<JsonCrewDto> data)
         {
             if (data == null || data.Count == 0)
             {
@@ -63,9 +74,23 @@ namespace Academy2018_.NET_Homework5.Core.Services.Data
             await _repository.AddRangeAsync(models);
         }
 
-        public async Task WriteLogAsync(List<JsonCrewDto> data)
+        private async Task WriteLogAsync(List<JsonCrewDto> data)
         {
+            if (data == null || data.Count == 0)
+            {
+                throw new NullBodyException();
+            }
 
+            string path = $"../Logs/log_{DateTime.Now.ToString().Replace(':', '-')}.csv";
+            using (StreamWriter sw = new StreamWriter(path, false))
+            {
+                foreach (var d in data)
+                {
+                    await sw.WriteLineAsync($"{d.Id}," +
+                                            $"{d.Pilot.First().FirstName} {d.Pilot.First().LastName}," +
+                                            $"{d.Stewardess.Count}");
+                }
+            }
         }
     }
 }
