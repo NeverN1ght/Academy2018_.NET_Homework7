@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Academy2018_.NET_Homework5.Core.Abstractions;
 using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework5.Shared.Exceptions;
@@ -25,16 +26,16 @@ namespace Academy2018_.NET_Homework5.Core.Services.Basic
             _validator = validator;
         }
 
-        public IEnumerable<TDto> GetAll()
+        public async Task<IEnumerable<TDto>> GetAllAsync()
         {
             return _mapper.Map<IEnumerable<TEntity>, IEnumerable<TDto>>(
-                _repository.Get());
+                await _repository.GetAsync());
         }
 
-        public TDto GetById(object id)
+        public async Task<TDto> GetByIdAsync(object id)
         {
             var response = _mapper.Map<TEntity, TDto>(
-                _repository.Get(id));
+                await _repository.GetAsync(id));
 
             if (response == null)
             {
@@ -44,7 +45,7 @@ namespace Academy2018_.NET_Homework5.Core.Services.Basic
             return response;
         }
 
-        public object Add(TDto dto)
+        public async Task<object> AddAsync(TDto dto)
         {
             if (dto == null)
             {
@@ -52,11 +53,11 @@ namespace Academy2018_.NET_Homework5.Core.Services.Basic
             }
 
             var model = _mapper.Map<TDto, TEntity>(dto);
-            var validationResult = _validator.Validate(model);
+            var validationResult = await _validator.ValidateAsync(model);
 
             if (validationResult.IsValid)
             {
-                return _repository.Create(model);
+                return await _repository.CreateAsync(model);
             }
             else
             {
@@ -64,23 +65,23 @@ namespace Academy2018_.NET_Homework5.Core.Services.Basic
             }
         }
 
-        public void Update(object id, TDto dto)
+        public async Task UpdateAsync(object id, TDto dto)
         {
             if (dto == null)
             {
                 throw new NullBodyException();
             }
 
-            if (_repository.IsExist(id))
+            if (await _repository.IsExistAsync(id))
             {
                 var model = _mapper.Map<TDto, TEntity>(dto);
-                var validationResult = _validator.Validate(model);
+                var validationResult = await _validator.ValidateAsync(model);
 
                 if (validationResult.IsValid)
                 {
-                    _repository.Update(id, model);
+                    await _repository.UpdateAsync(id, model);
 
-                    _repository.SaveChanges();
+                    await _repository.SaveChangesAsync();
                 }
                 else
                 {
@@ -93,13 +94,13 @@ namespace Academy2018_.NET_Homework5.Core.Services.Basic
             }
         }
 
-        public void Delete(object id)
+        public async Task DeleteAsync(object id)
         {
-            if (_repository.IsExist(id))
+            if (await _repository.IsExistAsync(id))
             {
-                _repository.Delete(id);
+                await _repository.DeleteAsync(id);
 
-                _repository.SaveChanges();
+                await _repository.SaveChangesAsync();
             }
             else
             {

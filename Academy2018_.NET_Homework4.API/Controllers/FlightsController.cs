@@ -1,4 +1,7 @@
-﻿using Academy2018_.NET_Homework5.Core.Abstractions;
+﻿using System;
+using System.Threading.Tasks;
+using Academy2018_.NET_Homework5.Core.Abstractions;
+using Academy2018_.NET_Homework5.Core.Services;
 using Academy2018_.NET_Homework5.Shared.DTOs;
 using Academy2018_.NET_Homework5.Shared.Exceptions;
 using FluentValidation;
@@ -11,43 +14,57 @@ namespace Academy2018_.NET_Homework5.API.Controllers
     [Route("api/Flights")]
     public class FlightsController : Controller
     {
-        private readonly IService<FlightDto> _flightsService;
+        private readonly FlightsService _flightsService;
 
-        public FlightsController(IService<FlightDto> flightsService)
+        public FlightsController(FlightsService flightsService)
         {
             _flightsService = flightsService;
         }
 
         // GET: api/Flights
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_flightsService.GetAll());
+            return Ok(await _flightsService.GetAllAsync());
         }
 
         // GET: api/Flights/5
         [HttpGet("{number}")]
-        public IActionResult Get(string number)
+        public async Task<IActionResult> Get(string number)
         {
             try
             {
-                return Ok(_flightsService.GetById(number));
+                return Ok(await _flightsService.GetByIdAsync(number));
             }
             catch (NotExistException)
             {
                 return NotFound();
             }
         }
-        
-        // POST: api/Flights
-        [HttpPost]
-        public IActionResult Post([FromBody]FlightDto dto)
+
+        // GET: api/Flights/Delay
+        [HttpGet("Delay")]
+        public async Task<IActionResult> QueryWithDelay()
         {
             try
             {
-                var createdId = _flightsService.Add(dto);
+                return Ok(await _flightsService.GetFlightQueryWithDelay());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST: api/Flights
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]FlightDto dto)
+        {
+            try
+            {
+                var createdId = await _flightsService.AddAsync(dto);
                 return CreatedAtAction("Get",
-                    _flightsService.GetById(createdId));
+                    await _flightsService.GetByIdAsync(createdId));
             }
             catch (ValidationException ex)
             {
@@ -65,11 +82,11 @@ namespace Academy2018_.NET_Homework5.API.Controllers
         
         // PUT: api/Flights/5
         [HttpPut("{number}")]
-        public IActionResult Put(string number, [FromBody] FlightDto dto)
+        public async Task<IActionResult> Put(string number, [FromBody] FlightDto dto)
         {
             try
             {
-                _flightsService.Update(number, dto);
+                await _flightsService.UpdateAsync(number, dto);
                 return Ok();
             }
             catch (NotExistException)
@@ -88,11 +105,11 @@ namespace Academy2018_.NET_Homework5.API.Controllers
         
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{number}")]
-        public IActionResult Delete(string number)
+        public async Task<IActionResult> Delete(string number)
         {
             try
             {
-                _flightsService.Delete(number);
+                await _flightsService.DeleteAsync(number);
                 return NoContent();
             }
             catch (NotExistException)

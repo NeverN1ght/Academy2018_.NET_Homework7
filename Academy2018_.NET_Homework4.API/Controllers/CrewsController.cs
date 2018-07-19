@@ -1,4 +1,7 @@
-﻿using Academy2018_.NET_Homework5.Core.Abstractions;
+﻿using System;
+using System.Threading.Tasks;
+using Academy2018_.NET_Homework5.Core.Abstractions;
+using Academy2018_.NET_Homework5.Core.Services.Data;
 using Academy2018_.NET_Homework5.Shared.DTOs;
 using Academy2018_.NET_Homework5.Shared.Exceptions;
 using FluentValidation;
@@ -12,42 +15,59 @@ namespace Academy2018_.NET_Homework5.API.Controllers
     public class CrewsController : Controller
     {
         private readonly IService<CrewDto> _crewsService;
+        private readonly CrewsLoadService _loadService;
 
-        public CrewsController(IService<CrewDto> crewsService)
+        public CrewsController(IService<CrewDto> crewsService, CrewsLoadService loadService)
         {
             _crewsService = crewsService;
+            _loadService = loadService;
         }
 
         // GET: api/Crews
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_crewsService.GetAll());
+            return Ok(await _crewsService.GetAllAsync());
         }
 
         // GET: api/Crews/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                return Ok(_crewsService.GetById(id));
+                return Ok(await _crewsService.GetByIdAsync(id));
             }
             catch (NotExistException)
             {
                 return NotFound();
             }
         }
-        
-        // POST: api/Crews
-        [HttpPost]
-        public IActionResult Post([FromBody]CrewDto dto)
+
+        // GET: api/Crews/Load
+        [HttpGet("Load")]
+        public async Task<IActionResult> Load()
         {
             try
             {
-                var createdId = _crewsService.Add(dto);
+                await _loadService.LoadLogAndSaveDataAsync("http://5b128555d50a5c0014ef1204.mockapi.io/crew");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST: api/Crews
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]CrewDto dto)
+        {
+            try
+            {
+                var createdId = await _crewsService.AddAsync(dto);
                 return CreatedAtAction("Get",
-                    _crewsService.GetById(createdId));
+                    await _crewsService.GetByIdAsync(createdId));
             }
             catch (ValidationException ex)
             {
@@ -65,11 +85,11 @@ namespace Academy2018_.NET_Homework5.API.Controllers
         
         // PUT: api/Crews/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]CrewDto dto)
+        public async Task<IActionResult> Put(int id, [FromBody]CrewDto dto)
         {
             try
             {
-                _crewsService.Update(id, dto);
+                await _crewsService.UpdateAsync(id, dto);
                 return Ok();
             }
             catch (NotExistException)
@@ -88,11 +108,11 @@ namespace Academy2018_.NET_Homework5.API.Controllers
         
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                _crewsService.Delete(id);
+                await _crewsService.DeleteAsync(id);
                 return NoContent();
             }
             catch (NotExistException)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Academy2018_.NET_Homework5.Infrastructure.Abstractions;
 using Academy2018_.NET_Homework5.Infrastructure.Database;
 using Academy2018_.NET_Homework5.Infrastructure.Models;
@@ -17,14 +18,15 @@ namespace Academy2018_.NET_Homework5.Infrastructure.Repositories
             _ctx = ctx;
         }
 
-        public override IEnumerable<Departure> Get()
+        public override async Task<List<Departure>> GetAsync()
         {
-            return _ctx.Departures
+            return await _ctx.Departures
                 .Include(d => d.Airplane)
                 .Include(d => d.Airplane.Type)
                 .Include(d => d.Crew)
                 .Include(d => d.Crew.Pilot)
-                .Include(d => d.Crew.Stewardesses);
+                .Include(d => d.Crew.Stewardesses)
+                .ToListAsync();
         }
     }
 }
