@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Academy2018_.NET_Homework5.API.Middleware;
 using Academy2018_.NET_Homework5.Core.Abstractions;
 using Academy2018_.NET_Homework5.Core.Services;
 using Academy2018_.NET_Homework5.Core.Services.Data;
@@ -17,6 +18,8 @@ using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +39,31 @@ namespace Academy2018_.NET_Homework5.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddCors();
+
+            services.AddCors(options => {
+                options.AddPolicy("CorsPolicy", 
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                    );
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigin", builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials());
+            });
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAllOrigin"));
+            });
 
             services.AddDbContext<AirportContext>();
 
@@ -90,6 +118,14 @@ namespace Academy2018_.NET_Homework5.API
             }
 
             app.UseMvc();
+            app.UseCorsMiddleware();
+            app.UseCors("CorsPolicy");
+            app.UseCors(builder => builder
+                .WithOrigins("http://localhost:4200")
+                .AllowCredentials()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+            );
         }
 
         public MapperConfiguration MapperConfiguration()
