@@ -6,6 +6,7 @@ using Academy2018_.NET_Homework5.Infrastructure.Models;
 using Academy2018_.NET_Homework5.Shared.DTOs;
 using Academy2018_.NET_Homework5.Shared.Exceptions;
 using FluentValidation;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -91,6 +92,7 @@ namespace Academy2018_.NET_Homework5.API.Controllers
         }
         
         // DELETE: api/ApiWithActions/5
+        [EnableCors("AllowAllOrigin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

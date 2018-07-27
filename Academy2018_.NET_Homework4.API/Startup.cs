@@ -40,10 +40,9 @@ namespace Academy2018_.NET_Homework5.API
         {
             services.AddMvc();
 
-            services.AddCors();
 
             services.AddCors(options => {
-                options.AddPolicy("CorsPolicy", 
+                options.AddPolicy("AllowAllOrigin", 
                     builder => builder
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
@@ -52,14 +51,6 @@ namespace Academy2018_.NET_Homework5.API
                     );
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAllOrigin", builder => builder
-                    .AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials());
-            });
             services.Configure<MvcOptions>(options =>
             {
                 options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAllOrigin"));
@@ -119,9 +110,11 @@ namespace Academy2018_.NET_Homework5.API
 
             app.UseMvc();
             app.UseCorsMiddleware();
-            app.UseCors("CorsPolicy");
+            app.UseCors("AllowAllOrigin");
+
             app.UseCors(builder => builder
                 .WithOrigins("http://localhost:4200")
+                .AllowAnyOrigin()
                 .AllowCredentials()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
